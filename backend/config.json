@@ -1,0 +1,4 @@
+{
+    "port": 3000,
+    "mongoURI": "mongodb+srv://VasanthPalanisamy:SvOLJOLtGxyrzMhU@cluster0.laduc.mongodb.net/test"
+}
