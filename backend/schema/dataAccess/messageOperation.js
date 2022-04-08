@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const messageQueue = require('../model/messageQueue');
 
 const insertMessage = async (newMessageRow) => {
@@ -63,18 +62,9 @@ const deleteMessage = async (deletemessagerow) => {
     //return messageQueue.findOneAndUpdate(filter, deleteBlock);
 };
 
-const getMessage = async (conversationID) => {
-    //return messageQueue.find({ConversationID: conversationID});
-    var chatConversation;
-
-    await messageQueue.find({ConversationID: conversationID}).then( async (conversation) => {
-        //console.log("Inside Utils: ", conversation);
-        chatConversation = await conversation;
-    }).catch((err) => {
-        console.log("New conversation");
-    });
-    return chatConversation;
-};
+const getMessage = (conversationID) => {
+    return messageQueue.find({ConversationID: conversationID})
+}
 
 
 module.exports = {
