@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const messageOperation = require('../schema/dataAccess/messageOperation');
 const conversationMappingOperation = require('../schema/dataAccess/conversationMappingOperation');
 
@@ -9,12 +8,22 @@ getMessage:
     Get all the message for the given conversationID
 
 Return:
-    JSON value
+    A new promise which is chained to the resolve of the promise from DB Access
+
+Exception:
+    Throws exception when there is any reject in promise returned from DB Access
 */
-const getMessage = async (conversationID) => {
-    const message = await messageOperation.getMessage(conversationID);
-    console.log("ConversationID: ", conversationID, "Message: ", message);
-    return message;
+const getMessage = (conversationID) => {
+    returnPromise = messageOperation.getMessage(conversationID)
+    .then((result) => {
+        console.log('Successfully fetched message data from mongodb');
+        return {'chat_message_list': result};
+    })
+    .catch((err) => {
+        console.log('Error occurred while fetching message for a given conversationID:' + conversationID);
+        throw err;
+    })
+    return new Promise(resolve => resolve(returnPromise))
 };
 
 
@@ -27,9 +36,11 @@ Return:
 */
 const insertMessage = async (req) => {
     // Need to think more
+    console.log(req.body);
 
     var conversationID = req.body.conversationID;
     var orginatorID = req.body.orginatorID;
+    console.log(orginatorID);
     var messageInsertion;
 
     var newMessageRow = {
@@ -63,6 +74,7 @@ const insertMessage = async (req) => {
             messageInsertion = await _getResponse(err);
         });
     }
+    console.log(messageInsertion);
     return messageInsertion;
 };
 

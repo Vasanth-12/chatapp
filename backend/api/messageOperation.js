@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const messageOperation = require('../utils/messageOperation');
+const messageOperation = require('../handlers/messageHandler');
+const reqHandler = require('./requestHandler')
 
 /*
     Get message requires
@@ -7,11 +8,8 @@ const messageOperation = require('../utils/messageOperation');
             ConversationID
 */
 
-router.get('/:conversationID', async (req, res) => {
-    console.log("req.params.conversationID: ", req.params.conversationID);
-    const getMessage = await messageOperation.getMessage(req.params.conversationID);
-    res.send(getMessage);
-    
+router.get('/:conversationID', (req, res) => {
+    reqHandler.process(res, messageOperation.getMessage, req.params.conversationID)
 });
 
 /*
